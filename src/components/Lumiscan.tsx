@@ -186,11 +186,11 @@ export default function Lumiscan() {
               <div className="absolute inset-0 h-8 w-8 text-primary animate-pulse opacity-50"></div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-primary tracking-wider">
-                LUMISCAN
+              <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent tracking-wider">
+                LumiScan
               </h1>
               <p className="text-xs text-muted-foreground tracking-wide">
-                Intelligent Data Extraction
+                Powered by Lumineur
               </p>
             </div>
           </div>
@@ -226,11 +226,12 @@ export default function Lumiscan() {
             <div className="text-center space-y-8 max-w-4xl mx-auto relative z-10">
               <div className="space-y-6">
                 <div className="relative">
-                  <h2 className="text-6xl font-bold text-primary tracking-wider mb-4">
-                    LUMISCAN
+                  <h2 className="text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent tracking-wider mb-6">
+                    LumiScan
                   </h2>
-                  <p className="text-lg text-accent tracking-wide font-medium">
-                    Intelligent Data Extraction for Drug Delivery
+                  <div className="h-1 w-32 bg-gradient-primary mx-auto mb-6 rounded-full"></div>
+                  <p className="text-xl text-accent/90 tracking-wide font-medium">
+                    Intelligent Data Extraction for Drug Delivery Research
                   </p>
                 </div>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -239,22 +240,22 @@ export default function Lumiscan() {
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-12">
                 <Button 
                   size="lg" 
                   onClick={() => setTab("upload")}
-                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300 px-12 py-4 text-lg font-semibold tracking-wide rounded-full"
+                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300 px-16 py-6 text-xl font-bold tracking-wider rounded-full border border-primary/20 hover:scale-105 transform"
                 >
-                  ENTER
+                  Get Started
                 </Button>
-                <Button variant="outline" size="lg" onClick={handleLoadSample} className="border-primary/30 text-primary hover:bg-primary/10">
-                  <FileText className="h-5 w-5" />
-                  Sample Data
+                <Button variant="ghost" size="lg" onClick={handleLoadSample} className="text-primary hover:bg-primary/10 hover:text-primary border border-primary/20 px-8 py-6 rounded-full">
+                  <FileText className="h-5 w-5 mr-2" />
+                  View Demo
                 </Button>
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto relative z-10">
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto relative z-10 mt-16">
               <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-primary text-lg">
