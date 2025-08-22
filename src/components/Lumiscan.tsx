@@ -173,15 +173,26 @@ export default function Lumiscan() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-surface">
+    <div className="min-h-screen bg-gradient-surface relative overflow-hidden">
+      {/* Background orb */}
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-orb rounded-full opacity-20 blur-3xl animate-pulse"></div>
+      
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
+      <header className="relative z-10 border-b border-border/20 bg-card/20 backdrop-blur supports-[backdrop-filter]:bg-card/20">
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
-          <div className="flex items-center space-x-2">
-            <Beaker className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Lumiscan
-            </h1>
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <Beaker className="h-8 w-8 text-primary drop-shadow-glow" />
+              <div className="absolute inset-0 h-8 w-8 text-primary animate-pulse opacity-50"></div>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-primary tracking-wider">
+                LUMISCAN
+              </h1>
+              <p className="text-xs text-muted-foreground tracking-wide">
+                Intelligent Data Extraction
+              </p>
+            </div>
           </div>
           <Tabs value={tab} onValueChange={setTab} className="w-auto">
             <TabsList className="grid grid-cols-4 w-fit">
@@ -208,68 +219,85 @@ export default function Lumiscan() {
       <main className="container mx-auto px-6 py-8">
         <Tabs value={tab} onValueChange={setTab}>
           {/* Landing Page */}
-          <TabsContent value="landing" className="space-y-8">
-            <div className="text-center space-y-6 max-w-4xl mx-auto">
-              <div className="space-y-4">
-                <h2 className="text-5xl font-bold bg-gradient-hero bg-clip-text text-transparent leading-tight">
-                  From Papers to Structured Data
-                </h2>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Extract structured nanomedicine data from research articles instantly. 
-                  Upload PDFs or paste URLs to get organized, searchable data tables.
+          <TabsContent value="landing" className="space-y-12 relative">
+            {/* Central orb */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-orb rounded-full opacity-30 blur-2xl"></div>
+            
+            <div className="text-center space-y-8 max-w-4xl mx-auto relative z-10">
+              <div className="space-y-6">
+                <div className="relative">
+                  <h2 className="text-6xl font-bold text-primary tracking-wider mb-4">
+                    LUMISCAN
+                  </h2>
+                  <p className="text-lg text-accent tracking-wide font-medium">
+                    Intelligent Data Extraction for Drug Delivery
+                  </p>
+                </div>
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                  Transform research papers into structured nanomedicine data instantly. 
+                  Upload PDFs or paste URLs to unlock organized, searchable insights.
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button variant="hero" size="lg" onClick={() => setTab("upload")}>
-                  <Upload className="h-5 w-5" />
-                  Start Extraction
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
+                <Button 
+                  size="lg" 
+                  onClick={() => setTab("upload")}
+                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300 px-12 py-4 text-lg font-semibold tracking-wide rounded-full"
+                >
+                  ENTER
                 </Button>
-                <Button variant="outline" size="lg" onClick={handleLoadSample}>
+                <Button variant="outline" size="lg" onClick={handleLoadSample} className="border-primary/30 text-primary hover:bg-primary/10">
                   <FileText className="h-5 w-5" />
-                  View Sample Results
+                  Sample Data
                 </Button>
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <Card className="bg-gradient-card border-0 shadow-medium hover:shadow-strong transition-all duration-300">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto relative z-10">
+              <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Upload className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-3 text-primary text-lg">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <Upload className="h-5 w-5" />
+                    </div>
                     Upload & Process
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Upload PDF files or paste article URLs. Our AI extracts key nanomedicine data points automatically.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-card border-0 shadow-medium hover:shadow-strong transition-all duration-300">
+              <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Search className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-3 text-primary text-lg">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <Search className="h-5 w-5" />
+                    </div>
                     Review & Edit
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Review extracted data with confidence scores. Filter, search, and edit results to ensure accuracy.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-card border-0 shadow-medium hover:shadow-strong transition-all duration-300">
+              <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Download className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-3 text-primary text-lg">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <Download className="h-5 w-5" />
+                    </div>
                     Export Data
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Export your structured data as JSON or CSV for further analysis and integration with your research workflow.
                   </p>
                 </CardContent>

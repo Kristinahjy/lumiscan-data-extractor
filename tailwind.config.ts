@@ -80,6 +80,7 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-orb': 'var(--gradient-orb)',
 				'gradient-card': 'var(--gradient-card)',
 				'gradient-surface': 'var(--gradient-surface)'
 			},
