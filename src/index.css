@@ -18,9 +18,9 @@ All colors MUST be HSL.
     --popover: 224 23% 16%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 43 96% 56%;
+    --primary: 45 89% 68%;
     --primary-foreground: 220 39% 11%;
-    --primary-glow: 14 100% 57%;
+    --primary-glow: 48 95% 78%;
 
     --secondary: 224 23% 16%;
     --secondary-foreground: 210 40% 98%;
@@ -28,7 +28,7 @@ All colors MUST be HSL.
     --muted: 215 25% 27%;
     --muted-foreground: 217 10% 64%;
 
-    --accent: 14 100% 57%;
+    --accent: 45 85% 60%;
     --accent-foreground: 220 39% 11%;
 
     --success: 142 76% 36%;
@@ -42,20 +42,20 @@ All colors MUST be HSL.
 
     --border: 215 25% 27%;
     --input: 215 25% 27%;
-    --ring: 43 96% 56%;
+    --ring: 45 89% 68%;
 
-    /* Lumineur gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(43 96% 56%), hsl(14 100% 57%));
-    --gradient-hero: linear-gradient(135deg, hsl(43 96% 56%) 0%, hsl(14 100% 57%) 50%, hsl(240 100% 50%) 100%);
-    --gradient-orb: linear-gradient(135deg, hsl(14 100% 57%) 0%, hsl(240 100% 50%) 100%);
+    /* Lumineur gradients with gold dream colors */
+    --gradient-primary: linear-gradient(135deg, hsl(45 89% 68%), hsl(48 95% 78%));
+    --gradient-hero: linear-gradient(135deg, hsl(45 89% 68%) 0%, hsl(48 95% 78%) 50%, hsl(240 100% 50%) 100%);
+    --gradient-orb: linear-gradient(135deg, hsl(48 95% 78%) 0%, hsl(240 100% 50%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(224 23% 16%) 0%, hsl(215 25% 27%) 100%);
     --gradient-surface: linear-gradient(180deg, hsl(220 39% 11%) 0%, hsl(224 23% 16%) 100%);
 
-    /* Enhanced shadows with golden glow */
-    --shadow-soft: 0 2px 8px hsl(43 96% 56% / 0.08);
-    --shadow-medium: 0 4px 20px hsl(43 96% 56% / 0.12);
-    --shadow-strong: 0 8px 32px hsl(43 96% 56% / 0.16);
-    --shadow-glow: 0 0 24px hsl(43 96% 56% / 0.3);
+    /* Enhanced shadows with golden dream glow */
+    --shadow-soft: 0 2px 8px hsl(45 89% 68% / 0.08);
+    --shadow-medium: 0 4px 20px hsl(45 89% 68% / 0.12);
+    --shadow-strong: 0 8px 32px hsl(45 89% 68% / 0.16);
+    --shadow-glow: 0 0 24px hsl(45 89% 68% / 0.3);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

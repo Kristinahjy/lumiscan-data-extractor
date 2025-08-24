@@ -190,7 +190,7 @@ export default function Lumiscan() {
                 LumiScan
               </h1>
               <p className="text-xs text-muted-foreground tracking-wide">
-                Powered by Lumineur
+                Powered by LUMINEUR
               </p>
             </div>
           </div>
