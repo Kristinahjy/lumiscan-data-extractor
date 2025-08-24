@@ -187,7 +187,8 @@ export default function Lumiscan() {
               <div className="absolute inset-0 h-8 w-8 text-primary animate-pulse opacity-50"></div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent tracking-wider">
+              <h1 className="text-3xl font-bold text-transparent bg-clip-text tracking-wider"
+                   style={{ backgroundImage: 'var(--gradient-metallic)' }}>
                 LumiScan
               </h1>
               <p className="text-xs text-muted-foreground tracking-wide">
@@ -228,16 +229,18 @@ export default function Lumiscan() {
             <div className="text-center space-y-8 max-w-4xl mx-auto relative z-10">
               <div className="space-y-6">
                 <div className="relative">
-                  <h2 className="text-7xl font-bold text-transparent bg-clip-text tracking-wider mb-6"
+                  <h2 className="text-7xl font-bold text-transparent bg-clip-text tracking-wider mb-6 relative"
                       style={{ 
-                        backgroundImage: 'var(--gradient-text)',
+                        backgroundImage: 'var(--gradient-gold-shine)',
                         WebkitBackgroundClip: 'text',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 20px hsl(45 89% 68% / 0.4))'
+                        filter: 'drop-shadow(0 0 30px hsl(50 100% 88% / 0.6)) drop-shadow(0 0 60px hsl(42 100% 70% / 0.4))',
+                        animation: 'pulse 3s ease-in-out infinite'
                       }}>
                     LumiScan
                   </h2>
-                  <div className="h-1 w-32 bg-gradient-primary mx-auto mb-6 rounded-full"></div>
+                  <div className="h-1 w-32 mx-auto mb-6 rounded-full" 
+                       style={{ backgroundImage: 'var(--gradient-metallic)' }}></div>
                   <p className="text-xl text-accent/90 tracking-wide font-medium">
                     Intelligent Data Extraction for Drug Delivery Research
                   </p>
@@ -252,11 +255,24 @@ export default function Lumiscan() {
                 <Button 
                   size="lg" 
                   onClick={() => setTab("upload")}
-                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300 px-16 py-6 text-xl font-bold tracking-wider rounded-full border border-primary/20 hover:scale-105 transform"
+                  className="px-16 py-6 text-xl font-bold tracking-wider rounded-full border border-primary/20 hover:scale-105 transform transition-all duration-300 text-background"
+                  style={{ 
+                    backgroundImage: 'var(--gradient-metallic)',
+                    boxShadow: '0 0 30px hsl(50 100% 88% / 0.3), 0 0 60px hsl(42 100% 70% / 0.2)'
+                  }}
                 >
                   Get Started
                 </Button>
-                <Button variant="ghost" size="lg" onClick={handleLoadSample} className="text-primary hover:bg-primary/10 hover:text-primary border border-primary/20 px-8 py-6 rounded-full">
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  onClick={handleLoadSample} 
+                  className="px-8 py-6 rounded-full border hover:bg-primary/10 hover:scale-105 transform transition-all duration-300"
+                  style={{ 
+                    borderColor: 'hsl(42 100% 70%)',
+                    color: 'hsl(42 100% 70%)'
+                  }}
+                >
                   <FileText className="h-5 w-5 mr-2" />
                   View Demo
                 </Button>
