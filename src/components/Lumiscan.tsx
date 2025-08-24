@@ -174,8 +174,9 @@ export default function Lumiscan() {
 
   return (
     <div className="min-h-screen bg-gradient-surface relative overflow-hidden">
-      {/* Background orb */}
-      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-orb rounded-full opacity-20 blur-3xl animate-pulse"></div>
+      {/* Background orb with slower animation */}
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-96 h-96 rounded-full opacity-20 blur-3xl animate-[pulse_4s_ease-in-out_infinite]"
+           style={{ background: 'var(--gradient-orb)' }}></div>
       
       {/* Header */}
       <header className="relative z-10 border-b border-border/20 bg-card/20 backdrop-blur supports-[backdrop-filter]:bg-card/20">
@@ -220,13 +221,20 @@ export default function Lumiscan() {
         <Tabs value={tab} onValueChange={setTab}>
           {/* Landing Page */}
           <TabsContent value="landing" className="space-y-12 relative">
-            {/* Central orb */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-orb rounded-full opacity-30 blur-2xl"></div>
+            {/* Central orb with slower animation and pink tones */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-64 rounded-full opacity-30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]" 
+                 style={{ background: 'var(--gradient-orb)' }}></div>
             
             <div className="text-center space-y-8 max-w-4xl mx-auto relative z-10">
               <div className="space-y-6">
                 <div className="relative">
-                  <h2 className="text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent tracking-wider mb-6">
+                  <h2 className="text-7xl font-bold text-transparent bg-clip-text tracking-wider mb-6"
+                      style={{ 
+                        backgroundImage: 'var(--gradient-text)',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        filter: 'drop-shadow(0 0 20px hsl(45 89% 68% / 0.4))'
+                      }}>
                     LumiScan
                   </h2>
                   <div className="h-1 w-32 bg-gradient-primary mx-auto mb-6 rounded-full"></div>
