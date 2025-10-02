@@ -19,7 +19,45 @@
   </head>
 
   <body>
+    <!-- 🔹 Quick test UI (outside React) -->
+    <div style="padding:12px;border-bottom:1px solid #eee;background:#fafafa">
+      <button id="testBackendBtn" style="padding:8px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer">
+        Test backend connection
+      </button>
+      <pre id="testOutput" style="white-space:pre-wrap;margin-top:8px;font-family:ui-monospace,Menlo,Consolas,monospace;"></pre>
+    </div>
+
+    <!-- Your React app mounts here -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- 🔹 Test script -->
+    <script>
+      // While developing locally, your FastAPI runs on your laptop:
+      const API_BASE = "http://127.0.0.1:8000";
+      // After you deploy the API (e.g., Render/Railway), switch to:
+      // const API_BASE = "https://YOUR-DEPLOYED-API-DOMAIN";
+
+      async function testHealth() {
+        const out = document.getElementById("testOutput");
+        out.textContent = "Pinging backend...";
+        try {
+          const res = await fetch(`${API_BASE}/v1/healthz`);
+          if (!res.ok) {
+            out.textContent = `Request failed: ${res.status}`;
+            return;
+          }
+          const data = await res.json();
+          out.textContent = `Backend says: ${JSON.stringify(data)}`;
+        } catch (err) {
+          out.textContent = `Network error: ${err}`;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("testBackendBtn");
+        if (btn) btn.addEventListener("click", testHealth);
+      });
+    </script>
   </body>
 </html>
