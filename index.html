@@ -33,26 +33,29 @@
 
     <!-- 🔹 Test script -->
     <script>
-      // 👇 Update this each time ngrok restarts
-      const API_BASE = "https://lumiscan-api.onrender.com";
+      <!-- 🔹 Test script -->
+<script>
+  const API_BASE = "https://lumiscan-api.onrender.com";
 
-      async function testHealth() {
-        const out = document.getElementById("testOutput");
-        out.textContent = "Pinging backend...";
-        try {
-          const res = await fetch(`${API_BASE}/v1/healthz`);
-          const text = await res.text(); // raw response
-          out.textContent = `Response (${res.status}):\n${text}`;
-        } catch (err) {
-          out.textContent = `Network error: ${err}`;
-        }
-      }
+  async function testHealth() {
+    const out = document.getElementById("testOutput");
+    out.textContent = "⏳ Backend waking up... please wait ~30–60s";
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const btn = document.getElementById("testBackendBtn");
-        if (btn) btn.addEventListener("click", testHealth);
-      });
-    </script>
-  </body>
+    try {
+      const res = await fetch(`${API_BASE}/v1/healthz`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      out.textContent = "✅ Backend says: " + JSON.stringify(data);
+    } catch (err) {
+      out.textContent = `❌ Error: ${err}`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("testBackendBtn");
+    if (btn) btn.addEventListener("click", testHealth);
+  });
+</script>
+</body>
 </html>
 
