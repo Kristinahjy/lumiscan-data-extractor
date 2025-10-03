@@ -33,24 +33,16 @@
 
     <!-- 🔹 Test script -->
     <script>
-      // While developing locally, your FastAPI runs on your laptop:
-
+      // 👇 Update this each time ngrok restarts
       const API_BASE = "https://winona-chirographical-latricia.ngrok-free.dev";
-
-      // After you deploy the API (e.g., Render/Railway), switch to:
-      // const API_BASE = "https://YOUR-DEPLOYED-API-DOMAIN";
 
       async function testHealth() {
         const out = document.getElementById("testOutput");
         out.textContent = "Pinging backend...";
         try {
           const res = await fetch(`${API_BASE}/v1/healthz`);
-          if (!res.ok) {
-            out.textContent = `Request failed: ${res.status}`;
-            return;
-          }
-          const data = await res.json();
-          out.textContent = `Backend says: ${JSON.stringify(data)}`;
+          const text = await res.text(); // raw response
+          out.textContent = `Response (${res.status}):\n${text}`;
         } catch (err) {
           out.textContent = `Network error: ${err}`;
         }
@@ -63,3 +55,4 @@
     </script>
   </body>
 </html>
+
