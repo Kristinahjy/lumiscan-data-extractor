@@ -56,6 +56,8 @@ const SAMPLE_DATA: Omit<DataRow, 'id'>[] = [
   { section: "Manufacturability", key: "Scalability note", value: "Shear-sensitive; microfluidics suggested", confidence: 0.66, sourceSpan: "p9" }
 ];
 
+const API_BASE = "https://lumiscan-api.onrender.com";
+
 const getConfidenceBadgeVariant = (confidence: number) => {
   if (confidence >= 0.9) return "default";
   if (confidence >= 0.8) return "secondary";
@@ -63,10 +65,40 @@ const getConfidenceBadgeVariant = (confidence: number) => {
   return "destructive";
 };
 
+// Map backend result (from app.py mock) → your table rows
+function backendToRows(result: any): Omit<DataRow, 'id'>[] {
+  const out: Omit<DataRow, 'id'>[] = [];
+
+  const meta = result?.paper_meta ?? {};
+  if (meta.title) out.push({ section: "Therapeutic Context", key: "Title", value: meta.title, confidence: 0.99 });
+  if (meta.journal) out.push({ section: "Therapeutic Context", key: "Journal", value: meta.journal, confidence: 0.9 });
+  if (meta.year) out.push({ section: "Therapeutic Context", key: "Year", value: String(meta.year), confidence: 0.9 });
+  if (meta.doi) out.push({ section: "Therapeutic Context", key: "DOI", value: meta.doi, confidence: 0.95 });
+  if (Array.isArray(meta.authors) && meta.authors.length) {
+    out.push({ section: "Therapeutic Context", key: "Authors", value: meta.authors.join(", "), confidence: 0.9 });
+  }
+
+  const form0 = Array.isArray(result?.formulation) ? result.formulation[0] : null;
+  if (form0?.nanocarrier_type) out.push({ section: "Nanocarrier", key: "Type", value: form0.nanocarrier_type, confidence: 0.88 });
+  if (form0?.process?.method) out.push({ section: "Formulation", key: "Method", value: form0.process.method, confidence: 0.86 });
+  if (Array.isArray(form0?.solvents) && form0.solvents.length) {
+    out.push({ section: "Formulation", key: "Solvents", value: form0.solvents.join(", "), confidence: 0.8 });
+  }
+
+  const chr = Array.isArray(result?.characterization) ? result.characterization : [];
+  const dls = chr.find((c: any) => (c.method || "").toLowerCase() === "dls");
+  if (dls?.size_nm != null) out.push({ section: "Characterization", key: "Size (DLS, Z-avg)", value: `${dls.size_nm} nm`, confidence: 0.9 });
+  if (dls?.pdi != null) out.push({ section: "Characterization", key: "PDI", value: String(dls.pdi), confidence: 0.85 });
+  if (dls?.zeta_mV != null) out.push({ section: "Characterization", key: "Zeta potential", value: `${dls.zeta_mV} mV`, confidence: 0.85 });
+
+  return out;
+}
+
 export default function Lumiscan() {
   const [tab, setTab] = useState("landing");
   const [rows, setRows] = useState<DataRow[]>([]);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [filterSection, setFilterSection] = useState("All");
@@ -102,21 +134,65 @@ export default function Lumiscan() {
     return [...new Set(rows.map((r) => r.section))];
   }, [rows]);
 
+  // REAL backend call for Extract Data
   const handleExtract = async () => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setRows(withIds(SAMPLE_DATA));
+      let job_id: string | undefined;
+
+      if (file) {
+        // PDF upload (multipart)
+        const fields = ["paper_meta", "formulation", "characterization", "in_vitro", "in_vivo", "safety", "provenance"];
+        const options = { ocr: true, tables: true };
+
+        const fd = new FormData();
+        fd.append("fields", JSON.stringify(fields));
+        fd.append("options", JSON.stringify(options));
+        fd.append("file", file);
+
+        const res = await fetch(`${API_BASE}/v1/extract/upload`, { method: "POST", body: fd });
+        if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+        const json = await res.json();
+        job_id = json.job_id;
+      } else if (url.trim()) {
+        // URL/DOI (JSON)
+        const payload = {
+          source: { type: url.includes("10.") ? "doi" : "url", value: url.trim() },
+          fields: ["paper_meta", "formulation", "characterization", "in_vitro", "in_vivo", "safety", "provenance"],
+          options: { ocr: true, tables: true },
+        };
+        const res = await fetch(`${API_BASE}/v1/extract`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        const json = await res.json();
+        job_id = json.job_id;
+      } else {
+        throw new Error("Please choose a PDF or enter a URL/DOI.");
+      }
+
+      if (!job_id) throw new Error("No job_id returned by backend.");
+
+      // Fetch job (MVP returns immediately with mock result)
+      const jobRes = await fetch(`${API_BASE}/v1/extract/${job_id}`);
+      if (!jobRes.ok) throw new Error(`Get job failed: ${jobRes.status}`);
+      const job = await jobRes.json();
+
+      const resultRows = backendToRows(job.result);
+      setRows(withIds(resultRows));
       setTab("results");
+
       toast({
         title: "Extraction Complete",
-        description: `Successfully extracted ${SAMPLE_DATA.length} data points from the document.`,
+        description: `Received ${resultRows.length} data points from backend.`,
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error(error);
       toast({
         title: "Extraction Failed",
-        description: "An error occurred while processing the document.",
+        description: error?.message || "Could not connect to backend.",
         variant: "destructive",
       });
     } finally {
@@ -222,7 +298,6 @@ export default function Lumiscan() {
         <Tabs value={tab} onValueChange={setTab}>
           {/* Landing Page */}
           <TabsContent value="landing" className="space-y-12 relative">
-            {/* Central orb with slower animation and pink tones */}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-64 rounded-full opacity-30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]" 
                  style={{ background: 'var(--gradient-orb)' }}></div>
             
@@ -354,7 +429,11 @@ export default function Lumiscan() {
                       id="file-upload"
                       type="file"
                       accept=".pdf"
-                      onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+                      onChange={(e) => {
+                        const f = e.target.files?.[0] ?? null;
+                        setFile(f);
+                        setFileName(f?.name ?? null);
+                      }}
                       className="cursor-pointer"
                     />
                     {fileName && (
@@ -376,11 +455,11 @@ export default function Lumiscan() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="url-input">Article URL</Label>
+                    <Label htmlFor="url-input">Article URL or DOI</Label>
                     <Input
                       id="url-input"
                       type="url"
-                      placeholder="https://example.com/research-paper"
+                      placeholder="https://example.com/research-paper or 10.xxxx/xxxx"
                       value={url}
                       onChange={(e) => setUrl(e.target.value)}
                     />
@@ -388,7 +467,7 @@ export default function Lumiscan() {
 
                   <Button 
                     onClick={handleExtract} 
-                    disabled={loading || (!fileName && !url)}
+                    disabled={loading || (!file && !url)}
                     className="w-full"
                     size="lg"
                   >
