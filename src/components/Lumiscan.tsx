@@ -103,6 +103,8 @@ export default function Lumiscan() {
   const [loading, setLoading] = useState(false);
   const [filterSection, setFilterSection] = useState("All");
   const [search, setSearch] = useState("");
+  const [backendStatus, setBackendStatus] = useState<string>("—");
+  const [testingBackend, setTestingBackend] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -248,6 +250,30 @@ export default function Lumiscan() {
     });
   };
 
+  const testBackendConnection = async () => {
+    setTestingBackend(true);
+    setBackendStatus("⏳ Testing...");
+    try {
+      const res = await fetch(`${API_BASE}/v1/healthz`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setBackendStatus("✅ Connected");
+      toast({
+        title: "Backend Connected",
+        description: "API is responding normally.",
+      });
+    } catch (err: any) {
+      setBackendStatus("❌ Failed");
+      toast({
+        title: "Connection Failed",
+        description: err?.message || "Could not reach backend.",
+        variant: "destructive",
+      });
+    } finally {
+      setTestingBackend(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-surface relative overflow-hidden">
       {/* Background orb with slower animation */}
@@ -272,25 +298,36 @@ export default function Lumiscan() {
               </p>
             </div>
           </div>
-          <Tabs value={tab} onValueChange={setTab} className="w-auto">
-            <TabsList className="grid grid-cols-4 w-fit">
-              <TabsTrigger value="landing" className="flex items-center gap-1">
-                <FileText className="h-4 w-4" />
-                Home
-              </TabsTrigger>
-              <TabsTrigger value="upload" className="flex items-center gap-1">
-                <Upload className="h-4 w-4" />
-                Upload
-              </TabsTrigger>
-              <TabsTrigger value="results" className="flex items-center gap-1">
-                <Search className="h-4 w-4" />
-                Results
-              </TabsTrigger>
-              <TabsTrigger value="about" className="flex items-center gap-1">
-                About
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="flex items-center gap-4">
+            <Tabs value={tab} onValueChange={setTab} className="w-auto">
+              <TabsList className="grid grid-cols-4 w-fit">
+                <TabsTrigger value="landing" className="flex items-center gap-1">
+                  <FileText className="h-4 w-4" />
+                  Home
+                </TabsTrigger>
+                <TabsTrigger value="upload" className="flex items-center gap-1">
+                  <Upload className="h-4 w-4" />
+                  Upload
+                </TabsTrigger>
+                <TabsTrigger value="results" className="flex items-center gap-1">
+                  <Search className="h-4 w-4" />
+                  Results
+                </TabsTrigger>
+                <TabsTrigger value="about" className="flex items-center gap-1">
+                  About
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={testBackendConnection}
+              disabled={testingBackend}
+              className="text-xs"
+            >
+              {testingBackend ? "Testing..." : backendStatus === "✅ Connected" ? "✅ API" : "Test API"}
+            </Button>
+          </div>
         </div>
       </header>
 
