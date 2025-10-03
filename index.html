@@ -23,46 +23,28 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-   <!-- 🔹 Simple top-left backend tester -->
-    <style>
-      #backend-tester {
-        position: fixed; top: 10px; left: 10px;
-        background: rgba(255,255,255,0.95);
-        border: 1px solid #ddd; border-radius: 8px;
-        padding: 8px 12px; font: 13px/1.3 ui-monospace,Menlo,Consolas,monospace;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        z-index: 9999;
-      }
-      #backend-tester button {
-        display: block; width: 100%; margin-bottom: 6px;
-        padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px;
-        cursor: pointer; background: #f9f9f9;
-      }
-      #backend-tester pre {
-        margin: 0; white-space: pre-wrap;
-        background: #f8f8f8; padding: 6px; border-radius: 6px;
-        border: 1px solid #eee; max-width: 220px;
-      }
-    </style>
+   <!-- Test: can the frontend talk to the backend? -->
+<div id="tester" style="position:fixed;top:10px;left:10px;z-index:9999;
+     background:white;border:1px solid #ccc;border-radius:6px;
+     padding:6px 10px;font:12px/1.3 monospace;">
+  <button id="testBackendBtn">Test backend connection</button>
+  <pre id="testOutput" style="margin-top:6px;white-space:pre-wrap;"></pre>
+</div>
 
-    <div id="backend-tester">
-      <button onclick="testHealth()">Test backend connection</button>
-      <pre id="backend-output">—</pre>
-    </div>
+<script>
+  const API_BASE = "https://lumiscan-api.onrender.com";
 
-    <script>
-      const API_BASE = "https://lumiscan-api.onrender.com";
+  document.getElementById("testBackendBtn").addEventListener("click", async () => {
+    const out = document.getElementById("testOutput");
+    out.textContent = "⏳ Waking server… please wait ~30–60s";
 
-      async function testHealth() {
-        const output = document.getElementById("backend-output");
-        output.textContent = "⏳ Waking up Render server...";
-        try {
-          const res = await fetch(`${API_BASE}/v1/healthz`);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          output.textContent = "✅ " + JSON.stringify(data);
-        } catch (err) {
-          output.textContent = "❌ " + err.message;
+    try {
+      const res = await fetch(`${API_BASE}/v1/healthz`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      out.textContent = "✅ " + JSON.stringify(data);
+    } catch (err) {
+      out.textContent = "❌ " + (err?.message || err);
         }
       }
       function wireTester() {
