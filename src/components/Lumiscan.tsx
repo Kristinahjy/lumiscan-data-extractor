@@ -282,39 +282,40 @@ export default function Lumiscan() {
       
       {/* Header */}
       <header className="relative z-10 border-b border-border/20 bg-card/20 backdrop-blur supports-[backdrop-filter]:bg-card/20">
-        <div className="container mx-auto flex items-center justify-between px-6 py-4">
-          <div className="flex items-center space-x-3">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="relative">
-              <Beaker className="h-8 w-8 text-primary drop-shadow-glow" />
-              <div className="absolute inset-0 h-8 w-8 text-primary animate-pulse opacity-50"></div>
+              <Beaker className="h-6 w-6 sm:h-8 sm:w-8 text-primary drop-shadow-glow" />
+              <div className="absolute inset-0 h-6 w-6 sm:h-8 sm:w-8 text-primary animate-pulse opacity-50"></div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-transparent bg-clip-text tracking-wider"
+              <h1 className="text-xl sm:text-3xl font-bold text-transparent bg-clip-text tracking-wider"
                    style={{ backgroundImage: 'var(--gradient-metallic)' }}>
                 LumiScan
               </h1>
-              <p className="text-xs text-muted-foreground tracking-wide">
+              <p className="text-[10px] sm:text-xs text-muted-foreground tracking-wide">
                 Powered by LUMINEUR
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Tabs value={tab} onValueChange={setTab} className="w-auto">
               <TabsList className="grid grid-cols-4 w-fit">
-                <TabsTrigger value="landing" className="flex items-center gap-1">
+                <TabsTrigger value="landing" className="flex items-center gap-1 px-2 sm:px-3">
                   <FileText className="h-4 w-4" />
-                  Home
+                  <span className="hidden sm:inline">Home</span>
                 </TabsTrigger>
-                <TabsTrigger value="upload" className="flex items-center gap-1">
+                <TabsTrigger value="upload" className="flex items-center gap-1 px-2 sm:px-3">
                   <Upload className="h-4 w-4" />
-                  Upload
+                  <span className="hidden sm:inline">Upload</span>
                 </TabsTrigger>
-                <TabsTrigger value="results" className="flex items-center gap-1">
+                <TabsTrigger value="results" className="flex items-center gap-1 px-2 sm:px-3">
                   <Search className="h-4 w-4" />
-                  Results
+                  <span className="hidden sm:inline">Results</span>
                 </TabsTrigger>
-                <TabsTrigger value="about" className="flex items-center gap-1">
-                  About
+                <TabsTrigger value="about" className="flex items-center gap-1 px-2 sm:px-3">
+                  <span className="hidden sm:inline">About</span>
+                  <span className="sm:hidden">ℹ</span>
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -323,7 +324,7 @@ export default function Lumiscan() {
               size="sm"
               onClick={testBackendConnection}
               disabled={testingBackend}
-              className="text-xs"
+              className="text-xs px-2 sm:px-3 hidden sm:flex"
             >
               {testingBackend ? "Testing..." : backendStatus === "✅ Connected" ? "✅ API" : "Test API"}
             </Button>
@@ -331,7 +332,7 @@ export default function Lumiscan() {
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8">
         <Tabs value={tab} onValueChange={setTab}>
           {/* Landing Page */}
           <TabsContent value="landing" className="space-y-12 relative">
@@ -341,7 +342,7 @@ export default function Lumiscan() {
             <div className="text-center space-y-8 max-w-4xl mx-auto relative z-10">
               <div className="space-y-6">
                 <div className="relative">
-                  <h2 className="text-7xl font-bold text-transparent bg-clip-text tracking-wider mb-6 relative"
+                  <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold text-transparent bg-clip-text tracking-wider mb-6 relative"
                       style={{ 
                         backgroundImage: 'var(--gradient-gold-shine)',
                         WebkitBackgroundClip: 'text',
@@ -353,11 +354,11 @@ export default function Lumiscan() {
                   </h2>
                   <div className="h-1 w-32 mx-auto mb-6 rounded-full" 
                        style={{ backgroundImage: 'var(--gradient-metallic)' }}></div>
-                  <p className="text-xl text-accent/90 tracking-wide font-medium">
+                  <p className="text-base sm:text-lg md:text-xl text-accent/90 tracking-wide font-medium px-4">
                     Intelligent Data Extraction for Drug Delivery Research
                   </p>
                 </div>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                <p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
                   Transform research papers into structured nanomedicine data instantly. 
                   Upload PDFs or paste URLs to unlock organized, searchable insights.
                 </p>
@@ -367,7 +368,7 @@ export default function Lumiscan() {
                 <Button 
                   size="lg" 
                   onClick={() => setTab("upload")}
-                  className="px-16 py-6 text-xl font-bold tracking-wider rounded-full border border-primary/20 hover:scale-105 transform transition-all duration-300 text-background"
+                  className="px-8 sm:px-16 py-4 sm:py-6 text-base sm:text-xl font-bold tracking-wider rounded-full border border-primary/20 hover:scale-105 transform transition-all duration-300 text-background"
                   style={{ 
                     backgroundImage: 'var(--gradient-metallic)',
                     boxShadow: '0 0 30px hsl(50 100% 88% / 0.3), 0 0 60px hsl(42 100% 70% / 0.2)'
@@ -379,7 +380,7 @@ export default function Lumiscan() {
                   variant="ghost" 
                   size="lg" 
                   onClick={handleLoadSample} 
-                  className="px-8 py-6 rounded-full border hover:bg-primary/10 hover:scale-105 transform transition-all duration-300"
+                  className="px-6 sm:px-8 py-4 sm:py-6 rounded-full border hover:bg-primary/10 hover:scale-105 transform transition-all duration-300"
                   style={{ 
                     borderColor: 'hsl(42 100% 70%)',
                     color: 'hsl(42 100% 70%)'
@@ -455,8 +456,8 @@ export default function Lumiscan() {
           <TabsContent value="upload" className="space-y-6">
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="text-center">
-                <h2 className="text-3xl font-bold mb-2">Upload Document</h2>
-                <p className="text-muted-foreground">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-2">Upload Document</h2>
+                <p className="text-sm sm:text-base text-muted-foreground px-4">
                   Choose a PDF file or paste an article URL to extract structured data.
                 </p>
               </div>
@@ -538,19 +539,21 @@ export default function Lumiscan() {
           <TabsContent value="results" className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h2 className="text-3xl font-bold">Extracted Data</h2>
-                <p className="text-muted-foreground">
+                <h2 className="text-2xl sm:text-3xl font-bold">Extracted Data</h2>
+                <p className="text-sm sm:text-base text-muted-foreground">
                   {filtered.length} of {rows.length} data points shown
                 </p>
               </div>
-              <div className="flex gap-2">
-                <Button variant="success" onClick={() => exportData('json')}>
+              <div className="flex gap-2 flex-wrap">
+                <Button variant="success" onClick={() => exportData('json')} size="sm" className="text-xs sm:text-sm">
                   <Download className="h-4 w-4" />
-                  Export JSON
+                  <span className="hidden sm:inline ml-2">Export JSON</span>
+                  <span className="sm:hidden ml-1">JSON</span>
                 </Button>
-                <Button variant="success" onClick={() => exportData('csv')}>
+                <Button variant="success" onClick={() => exportData('csv')} size="sm" className="text-xs sm:text-sm">
                   <Download className="h-4 w-4" />
-                  Export CSV
+                  <span className="hidden sm:inline ml-2">Export CSV</span>
+                  <span className="sm:hidden ml-1">CSV</span>
                 </Button>
               </div>
             </div>
@@ -602,15 +605,15 @@ export default function Lumiscan() {
                 </div>
 
                 <Card className="bg-gradient-card border-0 shadow-medium">
-                  <CardContent className="p-0">
+                  <CardContent className="p-0 overflow-x-auto">
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Section</TableHead>
-                          <TableHead>Key</TableHead>
-                          <TableHead>Value</TableHead>
-                          <TableHead>Confidence</TableHead>
-                          <TableHead>Source</TableHead>
+                          <TableHead className="min-w-[120px]">Section</TableHead>
+                          <TableHead className="min-w-[100px]">Key</TableHead>
+                          <TableHead className="min-w-[150px]">Value</TableHead>
+                          <TableHead className="min-w-[120px]">Confidence</TableHead>
+                          <TableHead className="min-w-[100px]">Source</TableHead>
                           <TableHead className="w-[50px]"></TableHead>
                         </TableRow>
                       </TableHeader>
@@ -686,8 +689,8 @@ export default function Lumiscan() {
           <TabsContent value="about" className="space-y-6">
             <div className="max-w-3xl mx-auto space-y-8">
               <div className="text-center">
-                <h2 className="text-3xl font-bold mb-4">About Lumiscan</h2>
-                <p className="text-lg text-muted-foreground">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-4">About LumiScan</h2>
+                <p className="text-base sm:text-lg text-muted-foreground px-4">
                   Advanced AI-powered data extraction for nanomedicine research
                 </p>
               </div>
