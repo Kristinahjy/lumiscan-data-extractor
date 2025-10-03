@@ -19,43 +19,53 @@
   </head>
 
   <body>
-    <!-- 🔹 Quick test UI (outside React) -->
-    <div style="padding:12px;border-bottom:1px solid #eee;background:#fafafa">
-      <button id="testBackendBtn" style="padding:8px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer">
-        Test backend connection
-      </button>
-      <pre id="testOutput" style="white-space:pre-wrap;margin-top:8px;font-family:ui-monospace,Menlo,Consolas,monospace;"></pre>
-    </div>
-
-    <!-- Your React app mounts here -->
+    <!-- 🔹 React app mounts here -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
+    <!-- 🔹 Floating backend test widget (always clickable) -->
+    <div id="backendTester" style="
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 99999;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      padding: 10px 12px;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      pointer-events: auto;
+    ">
+      <button id="testBackendBtn" type="button" style="padding:6px 10px;border:1px solid #ccc;border-radius:6px;cursor:pointer">
+        Test backend connection
+      </button>
+      <pre id="testOutput" style="margin-top:8px;max-width:360px;max-height:160px;overflow:auto;white-space:pre-wrap;"></pre>
+    </div>
+
     <!-- 🔹 Test script -->
     <script>
-      <!-- 🔹 Test script -->
-<script>
-  const API_BASE = "https://lumiscan-api.onrender.com";
+      const API_BASE = "https://lumiscan-api.onrender.com";
 
-  async function testHealth() {
-    const out = document.getElementById("testOutput");
-    out.textContent = "⏳ Backend waking up... please wait ~30–60s";
+      async function testHealth() {
+        const out = document.getElementById("testOutput");
+        out.textContent = "⏳ Backend waking up... please wait ~30–60s";
+        try {
+          const res = await fetch(`${API_BASE}/v1/healthz`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          out.textContent = "✅ Backend says: " + JSON.stringify(data);
+        } catch (err) {
+          out.textContent = "❌ Error: " + (err?.message || err);
+        }
+      }
 
-    try {
-      const res = await fetch(`${API_BASE}/v1/healthz`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      out.textContent = "✅ Backend says: " + JSON.stringify(data);
-    } catch (err) {
-      out.textContent = `❌ Error: ${err}`;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("testBackendBtn");
-    if (btn) btn.addEventListener("click", testHealth);
-  });
-</script>
-</body>
+      function wireTester() {
+        const btn = document.getElementById("testBackendBtn");
+        if (btn && !btn._wired) { btn.addEventListener("click", testHealth); btn._wired = true; }
+      }
+      document.addEventListener("DOMContentLoaded", wireTester);
+      setInterval(wireTester, 1000); // keep wired even if React remounts
+    </script>
+  </body>
 </html>
-
