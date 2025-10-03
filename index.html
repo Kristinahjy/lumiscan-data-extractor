@@ -4,18 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lumiscan - AI-Powered Nanomedicine Data Extraction</title>
-    <meta name="description" content="Extract structured data from nanomedicine research papers instantly. Upload PDFs or paste URLs to get organized, searchable data tables with AI-powered extraction." />
+    <meta
+      name="description"
+      content="Extract structured data from nanomedicine research papers instantly. Upload PDFs or paste URLs to get organized, searchable data tables with AI-powered extraction."
+    />
     <meta name="author" content="Lumiscan" />
-    <meta name="keywords" content="nanomedicine, data extraction, research papers, AI, scientific analysis, PDF processing" />
+    <meta
+      name="keywords"
+      content="nanomedicine, data extraction, research papers, AI, scientific analysis, PDF processing"
+    />
 
-    <meta property="og:title" content="Lumiscan - AI-Powered Nanomedicine Data Extraction" />
-    <meta property="og:description" content="Extract structured data from nanomedicine research papers instantly. Upload PDFs or paste URLs to get organized, searchable data tables with AI-powered extraction." />
+    <meta
+      property="og:title"
+      content="Lumiscan - AI-Powered Nanomedicine Data Extraction"
+    />
+    <meta
+      property="og:description"
+      content="Extract structured data from nanomedicine research papers instantly. Upload PDFs or paste URLs to get organized, searchable data tables with AI-powered extraction."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta
+      property="og:image"
+      content="https://lovable.dev/opengraph-image-p98pqg.png"
+    />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta
+      name="twitter:image"
+      content="https://lovable.dev/opengraph-image-p98pqg.png"
+    />
   </head>
 
   <body>
@@ -23,36 +41,52 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-   <!-- Test: can the frontend talk to the backend? -->
-<div id="tester" style="position:fixed;top:10px;left:10px;z-index:9999;
-     background:white;border:1px solid #ccc;border-radius:6px;
-     padding:6px 10px;font:12px/1.3 monospace;">
-  <button id="testBackendBtn">Test backend connection</button>
-  <pre id="testOutput" style="margin-top:6px;white-space:pre-wrap;"></pre>
-</div>
+    <!-- 🔹 Small backend tester widget -->
+    <div
+      id="tester"
+      style="
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 9999;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font: 12px/1.3 monospace;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      "
+    >
+      <button id="testBackendBtn">Test backend connection</button>
+      <pre
+        id="testOutput"
+        style="margin-top: 6px; white-space: pre-wrap; margin: 6px 0 0"
+      >
+—</pre
+      >
+    </div>
 
-<script>
-  const API_BASE = "https://lumiscan-api.onrender.com";
+    <script>
+      const API_BASE = "https://lumiscan-api.onrender.com";
 
-  document.getElementById("testBackendBtn").addEventListener("click", async () => {
-    const out = document.getElementById("testOutput");
-    out.textContent = "⏳ Waking server… please wait ~30–60s";
-
-    try {
-      const res = await fetch(`${API_BASE}/v1/healthz`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      out.textContent = "✅ " + JSON.stringify(data);
-    } catch (err) {
-      out.textContent = "❌ " + (err?.message || err);
+      async function testHealth() {
+        const out = document.getElementById("testOutput");
+        out.textContent = "⏳ Waking server… please wait ~30–60s";
+        try {
+          const res = await fetch(`${API_BASE}/v1/healthz`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          out.textContent = "✅ " + JSON.stringify(data);
+        } catch (err) {
+          out.textContent = "❌ " + (err?.message || err);
         }
       }
-      function wireTester() {
+
+      document.addEventListener("DOMContentLoaded", () => {
         const btn = document.getElementById("testBackendBtn");
-        if (btn && !btn._wired) { btn.addEventListener("click", testHealth); btn._wired = true; }
-      }
-      document.addEventListener("DOMContentLoaded", wireTester);
-      setInterval(wireTester, 1000); // keep wired even if React remounts
+        if (btn) btn.addEventListener("click", testHealth);
+      });
     </script>
   </body>
 </html>
+
