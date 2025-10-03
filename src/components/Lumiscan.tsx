@@ -355,7 +355,10 @@ export default function Lumiscan() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto relative z-10 mt-16">
-              <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
+              <Card 
+                className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105 cursor-pointer"
+                onClick={() => setTab("upload")}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-primary text-lg">
                     <div className="p-2 bg-primary/10 rounded-lg">
@@ -371,7 +374,10 @@ export default function Lumiscan() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
+              <Card 
+                className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105 cursor-pointer"
+                onClick={() => setTab("results")}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-primary text-lg">
                     <div className="p-2 bg-primary/10 rounded-lg">
@@ -387,7 +393,10 @@ export default function Lumiscan() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105">
+              <Card 
+                className="bg-gradient-card border border-border/20 shadow-medium hover:shadow-glow transition-all duration-500 hover:scale-105 cursor-pointer"
+                onClick={() => setTab("results")}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-primary text-lg">
                     <div className="p-2 bg-primary/10 rounded-lg">
